@@ -46,9 +46,7 @@ public class TcpLoadBalancer : ILoadBalancer<IBackendService>
             return; 
         }
 
-        var endpoints = healthyServices.Select(s => s.Endpoint).ToList();
-        var targetBackendEndpoint = _strategy.SelectBackendService(endpoints);
-        var selectedBackend = healthyServices.First(s => s.Endpoint == targetBackendEndpoint);
+        var selectedBackend = _strategy.SelectBackendService(healthyServices);
         Console.WriteLine($"[LB] Selected Backend Target: {selectedBackend.Id} -> {selectedBackend.Endpoint}");
         
         try

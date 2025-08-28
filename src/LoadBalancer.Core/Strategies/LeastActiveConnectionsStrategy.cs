@@ -3,16 +3,14 @@ using LoadBalancer.Core.Interfaces;
 
 namespace LoadBalancer.Core.Strategies;
 
-public class RoundRobinStrategy : ILoadBalanceStrategy
+public class LeastActiveConnectionsStrategy : ILoadBalanceStrategy
 {
-    private int index = -1;
-
     public IBackendService SelectBackendService(IReadOnlyList<IBackendService> backendServices)
     {
         if(backendServices.Count == 0)
             throw new InvalidOperationException("No backend services available");
-        
-        var next = Interlocked.Increment(ref index);
-        return backendServices[next % backendServices.Count];
+
+        var leastConnectedService = backendServices.OrderBy(s => s.ActiveConnections).First();
+        return leastConnectedService;
     }
 }

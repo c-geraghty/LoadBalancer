@@ -24,7 +24,7 @@ var healthService = new HealthCheckService(
 
 _ = healthService.CheckHealthAsync();
 
-var strategy = new RoundRobinStrategy();
+var strategy = new LeastActiveConnectionsStrategy();
 var handler = new TcpConnectionHandler();
 
 var listen = new IPEndPoint(IPAddress.Any, 5000);

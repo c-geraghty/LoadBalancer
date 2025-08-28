@@ -4,5 +4,5 @@ namespace LoadBalancer.Core.Interfaces;
 
 public interface ILoadBalanceStrategy
 {
-    IPEndPoint SelectBackendService(IReadOnlyList<IPEndPoint> backendServices);
+    IBackendService SelectBackendService(IReadOnlyList<IBackendService> backendServices);
 }
