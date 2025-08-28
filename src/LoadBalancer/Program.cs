@@ -8,9 +8,9 @@ Console.WriteLine("Starting LoadBalancer.Api...");
 
 var backends = new List<IBackendService>
 {
-    new TcpBackend("127.0.0.1", 6000),
-    new TcpBackend("127.0.0.1", 6001),
-    new TcpBackend("127.0.0.1", 6002)
+    new TcpBackend("127.0.0.1", 6000, 7000),
+    new TcpBackend("127.0.0.1", 6001, 7001),
+    new TcpBackend("127.0.0.1", 6002, 7002)
 };
 
 var healthCheck = new TcpHealthCheck();

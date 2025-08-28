@@ -13,7 +13,7 @@ public class TcpHealthCheck : IHealthCheck
         try
         {
             using var client = new TcpClient();
-            var connectTask = client.ConnectAsync(tcpBackend.Host, tcpBackend.Port);
+            var connectTask = client.ConnectAsync(tcpBackend.Host, tcpBackend.HealthCheckPort);
             var timeoutTask = Task.Delay(1000, ct);
 
             var completed = await Task.WhenAny(connectTask, timeoutTask);
