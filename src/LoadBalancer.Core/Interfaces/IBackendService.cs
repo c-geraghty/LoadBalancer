@@ -7,4 +7,5 @@ public interface IBackendService
     string Id { get; }
     IPEndPoint Endpoint { get; }
     bool IsHealthy { get; set; }
+    int ActiveConnections { get; set; }
 }

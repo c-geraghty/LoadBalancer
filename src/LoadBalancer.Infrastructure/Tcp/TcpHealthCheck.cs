@@ -14,9 +14,10 @@ public class TcpHealthCheck : IHealthCheck
         {
             using var client = new TcpClient();
             var connectTask = client.ConnectAsync(tcpBackend.Host, tcpBackend.Port);
-            var success = connectTask.IsCompleted && client.Connected;
-            client.Close();
-            return success;
+            var timeoutTask = Task.Delay(1000, ct);
+
+            var completed = await Task.WhenAny(connectTask, timeoutTask);
+            return completed == connectTask && client.Connected;
         }
         catch
         {

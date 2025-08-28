@@ -10,6 +10,7 @@ public class TcpBackend : IBackendService
     public int Port { get; }
     public bool IsHealthy { get; set; } = true;
     public IPEndPoint Endpoint { get; }
+    public int ActiveConnections { get; set; } = 0;
 
     public TcpBackend(string host, int port)
     {

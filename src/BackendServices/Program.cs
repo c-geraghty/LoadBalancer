@@ -4,9 +4,6 @@ using System.Text;
 
 class Program
 {
-    private static int _connectionCount = 0;
-    private static readonly object _lock = new();
-
     static async Task Main(string[] args)
     {
         int port = args.Length > 0 ? int.Parse(args[0]) : 6000;
@@ -19,10 +16,6 @@ class Program
         while (true)
         {
             var client = await listener.AcceptTcpClientAsync();
-
-            lock (_lock) _connectionCount++;
-            Console.WriteLine($"[Service:{port}] Client connected. Active connections: {_connectionCount}");
-
             _ = HandleClientAsync(client, port);
         }
     }
@@ -79,8 +72,6 @@ class Program
         finally
         {
             client.Close();
-            lock (_lock) _connectionCount--;
-            Console.WriteLine($"[Service:{port}] Client disconnected. Active connections: {_connectionCount}");
         }
     }
 }
