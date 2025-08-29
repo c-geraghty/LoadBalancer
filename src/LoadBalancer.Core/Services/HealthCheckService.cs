@@ -10,7 +10,7 @@ public class HealthCheckService
     private readonly CancellationToken _cancellationToken;
 
     public HealthCheckService(IEnumerable<IBackendService> backendServices, IHealthCheck healthCheck,
-        TimeSpan checkInterval, CancellationToken cancellationToken = default)
+        TimeSpan checkInterval, CancellationToken cancellationToken)
     {
         _backendServices = backendServices;
         _healthCheck = healthCheck;
