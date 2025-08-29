@@ -2,5 +2,5 @@ namespace LoadBalancer.Core.Interfaces;
 
 public interface IConnectionHandler 
 {
-    Task HandleAsync(Stream clientStream, IBackendService target, CancellationToken cancellationToken = default);
+    Task HandleAsync(Stream clientStream, IBackendService backendService, CancellationToken cancellationToken = default);
 }

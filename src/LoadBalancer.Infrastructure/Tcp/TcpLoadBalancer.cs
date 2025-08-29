@@ -10,31 +10,41 @@ public class TcpLoadBalancer : ILoadBalancer<IBackendService>
     private readonly List<IBackendService> _backendServices;
     private readonly ILoadBalanceStrategy _strategy;
     private readonly IConnectionHandler _handler;
+    private readonly CancellationToken _cancellationToken;
 
     public TcpLoadBalancer(IPEndPoint endpoint, List<IBackendService> services, ILoadBalanceStrategy strategy,
-        IConnectionHandler handler)
+        IConnectionHandler handler, CancellationToken cancellationToken)
     {
         _endpoint = endpoint;
         _backendServices = services;
         _strategy = strategy;
         _handler = handler;
+        _cancellationToken = cancellationToken;
     }
     
-    public async Task StartAsync(CancellationToken cancellationToken = default)
+    public async Task StartAsync()
     {
         var listener = new TcpListener(_endpoint);
         listener.Start();
+        Console.WriteLine($"TCP Load Balancer started on port {_endpoint.Port}. Press ENTER to stop.");
         Console.WriteLine($"Load balancer listening on {_endpoint.Address}:{_endpoint.Port}");
 
-        while (!cancellationToken.IsCancellationRequested)
+        try
         {
-            var client = await listener.AcceptTcpClientAsync(cancellationToken);
-            Console.WriteLine("Requested to LB received");
-            _ = Task.Run(() => HandleClientAsync(client, cancellationToken), cancellationToken);
+            while (!_cancellationToken.IsCancellationRequested)
+            {
+                var client = await listener.AcceptTcpClientAsync(_cancellationToken);
+                Console.WriteLine("Requested to LB received");
+                _ = Task.Run(() => HandleClientAsync(client), _cancellationToken);
+            }
+        }
+        catch (OperationCanceledException) when (_cancellationToken.IsCancellationRequested)
+        {
+            Console.WriteLine("[LB] Load balancer stopped.");
         }
     }
 
-    private async Task HandleClientAsync(TcpClient client, CancellationToken cancellationToken)
+    private async Task HandleClientAsync(TcpClient client)
     {
         var clientStream = client.GetStream();
         
@@ -51,7 +61,7 @@ public class TcpLoadBalancer : ILoadBalancer<IBackendService>
         
         try
         {
-            await _handler.HandleAsync(clientStream, selectedBackend, cancellationToken);
+            await _handler.HandleAsync(clientStream, selectedBackend, _cancellationToken);
         }
         catch (Exception ex)
         {

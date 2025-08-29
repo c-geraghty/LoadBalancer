@@ -20,14 +20,21 @@ public class HealthCheckService
 
     public async Task CheckHealthAsync()
     {
-        while (!_cancellationToken.IsCancellationRequested)
+        try
         {
-            foreach (var backendService in _backendServices)
+            while (!_cancellationToken.IsCancellationRequested)
             {
-                backendService.IsHealthy = await _healthCheck.CheckHealthAsync(backendService, _cancellationToken);
-                Console.WriteLine($"[HC] Backend {backendService.Id} - Healthy: {backendService.IsHealthy}");
+                foreach (var backendService in _backendServices)
+                {
+                    backendService.IsHealthy = await _healthCheck.CheckHealthAsync(backendService, _cancellationToken);
+                    Console.WriteLine($"[HC] Backend {backendService.Id} - Healthy: {backendService.IsHealthy}");
+                }
+                await Task.Delay(_checkInterval, _cancellationToken);
             }
-            await Task.Delay(_checkInterval, _cancellationToken);
+        }
+        catch (OperationCanceledException) when (_cancellationToken.IsCancellationRequested)
+        {
+            Console.WriteLine("[HC] Health check service stopped.");
         }
     }
 }

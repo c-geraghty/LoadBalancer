@@ -4,8 +4,6 @@ using LoadBalancer.Core.Services;
 using LoadBalancer.Core.Strategies;
 using LoadBalancer.Infrastructure.Tcp;
 
-Console.WriteLine("Starting LoadBalancer.Api...");
-
 var backends = new List<IBackendService>
 {
     new TcpBackend("127.0.0.1", 6000, 7000),
@@ -22,18 +20,17 @@ var healthService = new HealthCheckService(
     TimeSpan.FromSeconds(3),
     cts.Token);
 
-_ = healthService.CheckHealthAsync();
-
 var strategy = new LeastActiveConnectionsStrategy();
 var handler = new TcpConnectionHandler();
 
 var listen = new IPEndPoint(IPAddress.Any, 5000);
-var balancer = new TcpLoadBalancer(listen, backends, strategy, handler);
+var balancer = new TcpLoadBalancer(listen, backends, strategy, handler, cts.Token);
 
-var runTask = balancer.StartAsync(cts.Token);
+var balancerTask = balancer.StartAsync();
+var healthTask = healthService.CheckHealthAsync(); 
 
-Console.WriteLine("TCP Load Balancer started on port 5000. Press ENTER to stop.");
 Console.ReadLine();
-cts.Cancel();
 
-await runTask;
+cts.Cancel(); 
+
+await Task.WhenAll(healthTask, balancerTask);
