@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackendServices", "src\Back
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoadBalancer", "src\LoadBalancer\LoadBalancer.csproj", "{D979AF6E-EC7F-4B1D-AD16-D674A92F7E7A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoadBalancer.Core.Tests", "tests\LoadBalancer.Core.Tests\LoadBalancer.Core.Tests.csproj", "{06BA6FC1-DED5-4689-A31F-4A322752C41B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{D979AF6E-EC7F-4B1D-AD16-D674A92F7E7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D979AF6E-EC7F-4B1D-AD16-D674A92F7E7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D979AF6E-EC7F-4B1D-AD16-D674A92F7E7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06BA6FC1-DED5-4689-A31F-4A322752C41B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06BA6FC1-DED5-4689-A31F-4A322752C41B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06BA6FC1-DED5-4689-A31F-4A322752C41B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06BA6FC1-DED5-4689-A31F-4A322752C41B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
