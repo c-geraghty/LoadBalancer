@@ -15,6 +15,8 @@ The load balancer console will show what port it is listening on: 5000
 
 It also runs a periodic health check on the backend services to determine whether they are healthy by making a brief connection a health check specific port
 
+If services are marked as unhealthy due to a failed health check caused by them being offline, they are removed from the connection pool. Only healthy services are considered when choosing a service.
+
 <h3> Backend consoles </h3>
 
 The backend console will show the port it is listening on, health check port, and then received messages once a TCP connection has been established
