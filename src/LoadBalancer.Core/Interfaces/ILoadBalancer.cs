@@ -1,6 +1,6 @@
 namespace LoadBalancer.Core.Interfaces;
 
-public interface ILoadBalancer<T> where T : IBackendService
+public interface ILoadBalancer
 {
     Task StartAsync();
 }

@@ -4,7 +4,7 @@ using LoadBalancer.Core.Interfaces;
 
 namespace LoadBalancer.Infrastructure.Tcp;
 
-public class TcpLoadBalancer : ILoadBalancer<IBackendService>
+public class TcpLoadBalancer : ILoadBalancer
 {
     private readonly IPEndPoint _endpoint;
     private readonly List<IBackendService> _backendServices;
